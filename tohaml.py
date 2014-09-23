@@ -228,7 +228,7 @@ def unicode_to_entities(text):
     pieces = []
     for ch in line:
       codepoint = ord(ch)
-      if codepoint > 128:
+      if codepoint > 128 and skip_unicode_to_entities(codepoint):
         if codepoint in codepoint2name:
           html = '&' + codepoint2name[codepoint] + ';'
           html = clean_quotes(html)
@@ -240,6 +240,17 @@ def unicode_to_entities(text):
         pieces.append(ch)
     new_lines.append(''.join(pieces))
   return "\n".join(new_lines)
+
+
+def skip_unicode_to_entities(code):
+  """Skip some characters."""
+  # Skip Russian.
+  if (code >= 0x0400 and code <= 0x04FF) or (code >= 0x0500 and code <= 0x052F) or \
+    (code >= 0x2DE0 and code <= 0x2DFF) or (code >= 0xA640 and code <= 0xA69F) or \
+    code == 0x1D2B or code == 0x1D78:
+    return False
+
+  return True
 
 
 def print_elem(indent, elem, stream):

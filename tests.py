@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from  test_helper import *
 
 class HtmlToHamlPyTest(unittest.TestCase):
@@ -31,6 +32,9 @@ class HtmlToHamlPyTest(unittest.TestCase):
         self.assertEqual('''%tr.cls1{class:"{% cycle 'odd' 'even' %} cls.2"}''', render('''<tr class="cls1 {% cycle 'odd' 'even' %} cls.2">'''))
         self.assertEqual('''%tr.cls1{class:"{% cycle 'odd' 'even' %} cls.2 {{ another_class }}"}''', render('''<tr class="cls1 {% cycle 'odd' 'even' %} cls.2 {{ another_class }}">'''))
         self.assertEqual('''%tr{id:"cls1_{% cycle 'odd' 'even' %}_{{ another_class }}"}''', render('''<tr id="cls1_{% cycle 'odd' 'even' %}_{{ another_class }}">'''))
+
+    def test_do_not_encode_russian(self):
+        self.assertEqual('%div{class:"foo.bar"}\n  Не конвертируй русские буквы'.decode('utf-8'), render("<div class='foo.bar'>Не конвертируй русские буквы</div>"))
 
 if __name__ == '__main__':
     unittest.main()
