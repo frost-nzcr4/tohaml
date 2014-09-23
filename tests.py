@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from  test_helper import *
 
 class HtmlToHamlPyTest(unittest.TestCase):
@@ -21,5 +22,7 @@ class HtmlToHamlPyTest(unittest.TestCase):
     def test_inline_text(self):
         #FIXME
         self.assertEqual("%p\n  foo", render("<p>foo</p>"))
+    def test_do_not_encode_russian(self):
+        self.assertEqual('%div{class:"foo.bar"}\n  Не конвертируй русские буквы'.decode('utf-8'), render("<div class='foo.bar'>Не конвертируй русские буквы</div>"))
 if __name__ == '__main__':
     unittest.main()
